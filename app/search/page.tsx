@@ -17,6 +17,19 @@ function SearchPageContent() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [uploadedImageName, setUploadedImageName] = useState<string>("")
 
+  // Define product type
+  type Product = {
+    id: number | string
+    title: string
+    currentPrice: string
+    originalPrice: string | null
+    image: string
+    discount: string
+    sold: number
+    rating: number
+    hasFlag: boolean
+  }
+
   // Check for uploaded image on component mount
   useEffect(() => {
     const storedImage = localStorage.getItem('uploadedImage')
@@ -35,39 +48,162 @@ function SearchPageContent() {
     }
   }, [query, imageParam])
 
-  // Mock search function
+  // Mock search function with real product data
   const performSearch = (searchTerm: string) => {
     setIsLoading(true)
+    console.log('Searching for:', searchTerm)
+    
     // Simulate API call
     setTimeout(() => {
-      // Mock search results based on search term
-      const mockResults = [
+      // Import product data from product-section
+      const defaultProducts: Product[] = [
         {
           id: 1,
-          title: `Product related to ${searchTerm}`,
-          price: "৳ 500",
-          image: "/product-placeholder.svg",
-          rating: 4.5,
-          sold: 1000
+          title: "40/120 Pieces Boxed Black Ceram",
+          image: "https://images.unsplash.com/photo-1523275335684-3789896dca7f?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 425",
+          originalPrice: "৳ 457",
+          sold: 3,
+          rating: 4,
+          hasFlag: true
         },
         {
           id: 2,
-          title: `Another ${searchTerm} product`,
-          price: "৳ 750",
-          image: "/product-placeholder.svg",
-          rating: 4.3,
-          sold: 500
+          title: "Professional Fishing Rod Set",
+          image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 890",
+          originalPrice: "৳ 956",
+          sold: 12,
+          rating: 5,
+          hasFlag: false
         },
         {
           id: 3,
-          title: `${searchTerm} premium item`,
-          price: "৳ 1200",
-          image: "/product-placeholder.svg",
-          rating: 4.7,
-          sold: 200
+          title: "Carbon Fiber Fishing Pole",
+          image: "https://images.unsplash.com/photo-1599424116513-4d9a9a0c1b4d?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 650",
+          originalPrice: "৳ 698",
+          sold: 8,
+          rating: 4,
+          hasFlag: true
+        },
+        {
+          id: 4,
+          title: "Telescopic Fishing Rod",
+          image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 320",
+          originalPrice: "৳ 344",
+          sold: 15,
+          rating: 5,
+          hasFlag: false
+        },
+        {
+          id: 5,
+          title: "Spinning Fishing Reel",
+          image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 180",
+          originalPrice: "৳ 193",
+          sold: 25,
+          rating: 4,
+          hasFlag: true
+        },
+        {
+          id: 6,
+          title: "Fishing Line Set",
+          image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 95",
+          originalPrice: "৳ 102",
+          sold: 45,
+          rating: 3,
+          hasFlag: false
+        },
+        {
+          id: 7,
+          title: "Fishing Hooks Kit",
+          image: "https://images.unsplash.com/photo-1599424116513-4d9a9a0c1b4d?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 55",
+          originalPrice: "৳ 59",
+          sold: 67,
+          rating: 4,
+          hasFlag: true
+        },
+        {
+          id: 8,
+          title: "Fishing Tackle Box",
+          image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop",
+          discount: "7%",
+          currentPrice: "৳ 145",
+          originalPrice: "৳ 155",
+          sold: 9,
+          rating: 5,
+          hasFlag: false
         }
       ]
-      setSearchResults(mockResults)
+
+      const categoryProducts: Record<string, Product[]> = {
+        shoes: [
+          { id: 11, title: "Sports Running Shoes - Wholesale Import", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop", discount: "18%", currentPrice: "৳ 450", originalPrice: "৳ 550", sold: 1250, rating: 5, hasFlag: true },
+          { id: 12, title: "Formal Leather Shoes - Office Wear", image: "https://images.unsplash.com/photo-1463100091794-a9c563657cf2?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 890", originalPrice: null, sold: 890, rating: 4, hasFlag: false },
+          { id: 13, title: "Casual Sneakers - Daily Comfort", image: "https://images.unsplash.com/photo-1491553825944-8e3bf5fb802d?w=300&h=300&fit=crop", discount: "20%", currentPrice: "৳ 320", originalPrice: "৳ 400", sold: 2100, rating: 5, hasFlag: true },
+          { id: 14, title: "Kids School Shoes - Durable Quality", image: "https://images.unsplash.com/photo-1596457578869-af2e5e6036d1?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 280", originalPrice: null, sold: 3400, rating: 5, hasFlag: false },
+          { id: 15, title: "High Heels - Party Collection", image: "https://images.unsplash.com/photo-1543163554-3f743104bd85?w=300&h=300&fit=crop", discount: "15%", currentPrice: "৳ 650", originalPrice: "৳ 765", sold: 780, rating: 4, hasFlag: true }
+        ],
+        bags: [
+          { id: 16, title: "Travel Backpack - Large Capacity", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop", discount: "20%", currentPrice: "৳ 780", originalPrice: "৳ 980", sold: 1560, rating: 5, hasFlag: true },
+          { id: 17, title: "Ladies Handbag - Premium Quality", image: "https://images.unsplash.com/photo-1584917865442-89294acc05c6?w=300&h=300&fit=crop", discount: "23%", currentPrice: "৳ 920", originalPrice: "৳ 1200", sold: 890, rating: 4, hasFlag: false },
+          { id: 18, title: "School Bag - Water Resistant", image: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 340", originalPrice: null, sold: 2800, rating: 5, hasFlag: true },
+          { id: 19, title: "Office Briefcase - Professional", image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=300&fit=crop", discount: "10%", currentPrice: "৳ 1100", originalPrice: "৳ 1220", sold: 340, rating: 4, hasFlag: false }
+        ],
+        hoodie: [
+          { id: 24, title: "Classic Pullover Hoodie - Premium Cotton", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&h=300&fit=crop", discount: "20%", currentPrice: "৳ 890", originalPrice: "৳ 1112", sold: 2340, rating: 5, hasFlag: true },
+          { id: 25, title: "Zip-Up Hoodie - Street Style", image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=300&h=300&fit=crop", discount: "15%", currentPrice: "৳ 1200", originalPrice: "৳ 1412", sold: 1890, rating: 4, hasFlag: false },
+          { id: 26, title: "Oversized Hoodie - Comfort Fit", image: "https://images.unsplash.com/photo-1591047139829-d91ecb6eaa7f?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 950", originalPrice: null, sold: 3200, rating: 5, hasFlag: true },
+          { id: 27, title: "Graphic Print Hoodie - Trendy Design", image: "https://images.unsplash.com/photo-1559553737-b9e4b8d0d8a0?w=300&h=300&fit=crop", discount: "25%", currentPrice: "৳ 750", originalPrice: "৳ 1000", sold: 1560, rating: 4, hasFlag: false },
+          { id: 28, title: "Athletic Hoodie - Sport Collection", image: "https://images.unsplash.com/photo-1577401234523-4f9c4b8d0d8a?w=300&h=300&fit=crop", discount: "10%", currentPrice: "৳ 1100", originalPrice: "৳ 1222", sold: 2100, rating: 5, hasFlag: true }
+        ],
+        jewelry: [
+          { id: 20, title: "Gold Plated Necklace Set - Wedding Collection", image: "https://images.unsplash.com/photo-1599643448532-8b13dee7a3713?w=300&h=300&fit=crop", discount: "31%", currentPrice: "৳ 450", originalPrice: "৳ 650", sold: 1200, rating: 5, hasFlag: true },
+          { id: 21, title: "Fashion Earrings - Daily Wear", image: "https://images.unsplash.com/photo-1611085523210-0e29a4b5b4aa?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 120", originalPrice: null, sold: 3400, rating: 5, hasFlag: false },
+          { id: 22, title: "Bracelet Set - Modern Design", image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 280", originalPrice: null, sold: 890, rating: 4, hasFlag: true },
+          { id: 23, title: "Diamond Ring - Engagement Collection", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&h=300&fit=crop", discount: "25%", currentPrice: "৳ 1250", originalPrice: "৳ 1667", sold: 450, rating: 5, hasFlag: false }
+        ]
+      }
+
+      // Search logic
+      let searchResults: Product[] = []
+      const lowerSearchTerm = searchTerm.toLowerCase()
+      
+      // Search in default products
+      searchResults = defaultProducts.filter(product => 
+        product.title.toLowerCase().includes(lowerSearchTerm)
+      )
+      
+      // Search in category products
+      Object.keys(categoryProducts).forEach(category => {
+        if (category.toLowerCase().includes(lowerSearchTerm)) {
+          searchResults = [...searchResults, ...categoryProducts[category]]
+        } else {
+          const categoryMatches = categoryProducts[category].filter(product => 
+            product.title.toLowerCase().includes(lowerSearchTerm)
+          )
+          searchResults = [...searchResults, ...categoryMatches]
+        }
+      })
+      
+      // Remove duplicates
+      searchResults = searchResults.filter((product, index, self) => 
+        index === self.findIndex(p => p.id === product.id)
+      )
+      
+      console.log('Search results:', searchResults)
+      setSearchResults(searchResults)
       setIsLoading(false)
     }, 1000)
   }

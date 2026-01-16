@@ -14,6 +14,7 @@ export function Header() {
   const [cartCount, setCartCount] = useState(0)
   const [wishlistCount, setWishlistCount] = useState(0)
   const [searchError, setSearchError] = useState("")
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Update cart count from localStorage
@@ -21,6 +22,8 @@ export function Header() {
     const updateCartCount = () => {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]')
       const count = cart.reduce((sum: number, item: any) => sum + item.qty, 0)
+      console.log('Cart items:', cart)
+      console.log('Cart count:', count)
       setCartCount(count)
     }
 
@@ -74,14 +77,24 @@ export function Header() {
   }, [])
 
   const handleSearch = () => {
+    console.log('Search clicked with query:', searchQuery)
     if (searchQuery.trim()) {
       setSearchError("")
+      console.log('Navigating to search page with query:', searchQuery.trim())
       window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`
     } else {
-      setSearchError("Please fill this field on search by keyword")
+      console.log('Empty search query, showing error')
+      setSearchError("Please fill out this field")
       // Clear error after 3 seconds
       setTimeout(() => setSearchError(""), 3000)
     }
+  }
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion)
+    setShowSuggestions(false)
+    setSearchError("")
+    window.location.href = `/search?q=${encodeURIComponent(suggestion)}`
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -133,7 +146,7 @@ export function Header() {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row items-center gap-2 lg:gap-0">
+          <div className="flex flex-col">
             <span className="text-xl font-bold text-green-600 lg:text-2xl">Ecommerce</span>
             <span className="text-xs text-red-500 lg:text-sm">your perfect business solution</span>
           </div>
@@ -154,8 +167,10 @@ export function Header() {
               onChange={(e) => {
                 setSearchQuery(e.target.value)
                 setSearchError("") // Clear error when typing
+                setShowSuggestions(false) // Hide suggestions when typing
               }}
               onKeyPress={handleKeyPress}
+              onFocus={() => setShowSuggestions(true)}
               className={`flex-1 border-none focus-visible:ring-0 text-sm ${searchError ? 'border-red-500' : ''}`}
             />
             <Button 
@@ -168,12 +183,32 @@ export function Header() {
             </Button>
             <Button 
               onClick={handleSearch}
-              type="submit" 
               className="bg-green-500 text-white px-2 lg:px-4 py-2 rounded-none hover:bg-green-600 w-16 lg:w-16 h-10"
             >
               <Search className="w-5 h-5" />
             </Button>
           </div>
+          
+          {/* Search Suggestions Dropdown */}
+          {showSuggestions && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <div className="p-2">
+                <div className="text-xs text-gray-500 font-medium mb-2 px-2">Popular Searches:</div>
+                <div className="space-y-1">
+                  {['shoes', 'fishing rod', 'hoodie', 'bags', 'jewelry', 'electronics', 'clothing', 'sports'].map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    >
+                      🔍 {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          
           {searchError && (
             <div className="absolute top-full left-0 right-0 mt-2">
               <div className="bg-red-500 text-white text-sm px-3 py-2 rounded-lg shadow-lg">
@@ -186,9 +221,16 @@ export function Header() {
         <div className="flex items-center gap-2 lg:gap-4 order-3 lg:order-2">
           <Link href="/cart" className="relative p-2 border-none bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors">
             <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
-            <span className="absolute -top-2 -right-2 flex items-center justify-center w-4 h-4 bg-white text-xs rounded-full">
-              {cartCount}
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-yellow-400 text-red-600 text-xs font-bold rounded-full border-2 border-white">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+          <Link href="/orders" className="relative lg:mb-0 mb-4 hover:bg-gray-100 p-2 rounded-md transition-colors" prefetch={false}>
+            <svg className="w-5 h-5 lg:w-6 lg:h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
           </Link>
           <Link href="/wishlist" className="relative lg:mb-0 mb-4" prefetch={false}>
             <Heart className="w-5 h-5 lg:w-6 lg:h-6 text-gray-700" />

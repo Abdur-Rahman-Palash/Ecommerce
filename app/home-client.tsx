@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { CategorySidebar } from "@/components/category-sidebar"
 import { ProductSection } from "@/components/product-section"
-import { TodayTrading } from "@/components/today-trading"
 import { ChatWidget } from "@/components/chat-widget"
 
 export function HomeClient() {
@@ -40,18 +39,28 @@ export function HomeClient() {
         </div>
       )}
 
-      {/* Desktop Sidebar - Hidden on mobile */}
-      <div className="hidden lg:block">
-        <CategorySidebar 
-          selectedCategory={selectedCategory}
-          onCategorySelect={setSelectedCategory}
-        />
+      {/* Desktop Layout - No Gap */}
+      <div className="hidden lg:flex w-full">
+        {/* Desktop Sidebar */}
+        <div className="w-64 flex-shrink-0">
+          <CategorySidebar 
+            selectedCategory={selectedCategory}
+            onCategorySelect={setSelectedCategory}
+          />
+        </div>
+
+        {/* Main Content */}
+        <main className="flex-1 h-[calc(100vh-4rem)] overflow-y-auto p-6">
+          <div className="max-w-7xl mx-auto">
+            <ProductSection selectedCategory={selectedCategory} />
+            <ChatWidget />
+          </div>
+        </main>
       </div>
 
-      {/* Main Content */}
-      <main className="flex-1 lg:ml-64 h-[calc(100vh-4rem)] overflow-y-auto p-4 lg:p-6">
+      {/* Mobile Main - Full width when sidebar is closed */}
+      <main className="lg:hidden flex-1 h-[calc(100vh-4rem)] overflow-y-auto p-4">
         <div className="max-w-7xl mx-auto">
-          <TodayTrading />
           <ProductSection selectedCategory={selectedCategory} />
           <ChatWidget />
         </div>
