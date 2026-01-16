@@ -1,0 +1,6 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="300" fill="#fef3c7"/>
+<path d="M80 180c0-20 20-40 40-40h60c20 0 40 20 40 40v60c0 10-10 20-20 20H100c-10 0-20-10-20-20v-60z" fill="#f59e0b"/>
+<path d="M100 160c0-10 10-20 20-20h60c10 0 20 10 20 20v40c0 5-5 10-10 10H110c-5 0-10-5-10-10v-40z" fill="#d97706"/>
+<text x="150" y="220" font-family="Arial, sans-serif" font-size="16" fill="#92400e" text-anchor="middle">Shoes</text>
+</svg>
