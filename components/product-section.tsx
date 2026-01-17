@@ -120,6 +120,17 @@ const categoryProducts: Record<string, any[]> = {
     { id: 27, title: "Graphic Print Hoodie - Trendy Design", image: "https://images.unsplash.com/photo-1559553737-b9e4152e9381?w=300&h=300&fit=crop", discount: "25%", currentPrice: "৳ 750", originalPrice: "৳ 1000", sold: 1560, rating: 4, hasFlag: false },
     { id: 28, title: "Athletic Hoodie - Sport Collection", image: "https://images.unsplash.com/photo-1577401234523-4f9c4b8d0d8a?w=300&h=300&fit=crop", discount: "10%", currentPrice: "৳ 1100", originalPrice: "৳ 1222", sold: 2100, rating: 5, hasFlag: true }
   ],
+  "men-shoes": [
+    { id: 12, title: "Formal Leather Shoes - Office Wear", image: "https://images.unsplash.com/photo-1463100091794-a9c563657cf2?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 890", originalPrice: null, sold: 890, rating: 4, hasFlag: false },
+    { id: 15, title: "High Heels - Party Collection", image: "https://images.unsplash.com/photo-1543163554-3f743104bd85?w=300&h=300&fit=crop", discount: "15%", currentPrice: "৳ 650", originalPrice: "৳ 765", sold: 780, rating: 4, hasFlag: true }
+  ],
+  "women-shoes": [
+    { id: 11, title: "Sports Running Shoes - Wholesale Import", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop", discount: "18%", currentPrice: "৳ 450", originalPrice: "৳ 550", sold: 1250, rating: 5, hasFlag: true },
+    { id: 13, title: "Casual Sneakers - Daily Comfort", image: "https://images.unsplash.com/photo-1491553825944-8e3bf5fb802d?w=300&h=300&fit=crop", discount: "20%", currentPrice: "৳ 320", originalPrice: "৳ 400", sold: 2100, rating: 5, hasFlag: true }
+  ],
+  "kids-shoes": [
+    { id: 14, title: "Kids School Shoes - Durable Quality", image: "https://images.unsplash.com/photo-1596457578869-af2e5e6036d1?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 280", originalPrice: null, sold: 3400, rating: 5, hasFlag: false }
+  ],
   bag: [
     { id: 29, title: "Leather Backpack - Premium Quality", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop", discount: "30%", currentPrice: "৳ 2200", originalPrice: "৳ 3142", sold: 890, rating: 5, hasFlag: true },
     { id: 30, title: "Designer Handbag - Luxury Collection", image: "https://images.unsplash.com/photo-1584917865442-89294acc05c6?w=300&h=300&fit=crop", discount: "0%", currentPrice: "৳ 3500", originalPrice: null, sold: 450, rating: 4, hasFlag: false },
@@ -172,6 +183,24 @@ export function ProductSection({ selectedCategory }: ProductSectionProps) {
       products: categoryProducts.shoes,
       badge: "👟",
       slug: "shoes"
+    },
+    {
+      title: "MEN'S SHOES",
+      products: categoryProducts["men-shoes"],
+      badge: "👟",
+      slug: "men-shoes"
+    },
+    {
+      title: "WOMEN'S SHOES",
+      products: categoryProducts["women-shoes"],
+      badge: "👟",
+      slug: "women-shoes"
+    },
+    {
+      title: "KIDS' SHOES",
+      products: categoryProducts["kids-shoes"],
+      badge: "👟",
+      slug: "kids-shoes"
     },
     {
       title: "JEWELRY",

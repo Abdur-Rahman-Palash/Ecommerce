@@ -5,7 +5,16 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 
 const categories = [
-  { name: "Shoes", icon: "👟", slug: "shoes" },
+  { 
+    name: "Shoes", 
+    icon: "👟", 
+    slug: "shoes",
+    subcategories: [
+      { name: "Men", slug: "men-shoes" },
+      { name: "Women", slug: "women-shoes" },
+      { name: "Kids", slug: "kids-shoes" }
+    ]
+  },
   { name: "Bags", icon: "👜", slug: "bags" },
   { name: "Jewelry", icon: "💍", slug: "jewelry" },
   { name: "Hoodies", icon: "🧥", slug: "hoodie" },
@@ -72,6 +81,16 @@ interface CategorySidebarProps {
 }
 
 export function CategorySidebar({ selectedCategory, onCategorySelect, isMobile, onClose }: CategorySidebarProps) {
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(['shoes']) // Start with shoes expanded
+
+  const toggleCategory = (categorySlug: string) => {
+    setExpandedCategories(prev => 
+      prev.includes(categorySlug) 
+        ? prev.filter(slug => slug !== categorySlug)
+        : [...prev, categorySlug]
+    )
+  }
+
   const sidebarClasses = isMobile 
     ? "fixed inset-0 z-50 bg-white w-64 h-full shadow-xl transform transition-transform duration-300 ease-in-out"
     : "w-64 bg-white border-r border-gray-200 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto"
@@ -96,34 +115,84 @@ export function CategorySidebar({ selectedCategory, onCategorySelect, isMobile, 
         {!isMobile && <h2 className="text-lg font-bold mb-4 text-gray-800">Categories</h2>}
         <nav className={`${isMobile ? 'space-y-1' : 'space-y-1'}`}>
           {categories.map((category) => (
-            <button
-              key={category.slug}
-              onClick={() => {
-                onCategorySelect?.(category.slug)
-                if (isMobile && onClose) onClose()
-              }}
-              className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors group ${
-                selectedCategory === category.slug
-                  ? 'bg-green-50 border border-green-200'
-                  : 'hover:bg-gray-50'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-xl">{category.icon}</span>
-                <span className={`text-sm font-medium ${
+            <div key={category.slug}>
+              <button
+                onClick={() => {
+                  if (category.subcategories) {
+                    // For Shoes category, select "shoes" to show all shoes
+                    onCategorySelect?.(category.slug)
+                    if (isMobile && onClose) onClose()
+                  } else {
+                    onCategorySelect?.(category.slug)
+                    if (isMobile && onClose) onClose()
+                  }
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors group ${
                   selectedCategory === category.slug
-                    ? 'text-green-700'
-                    : 'text-gray-700 group-hover:text-gray-900'
-                }`}>
-                  {category.name}
-                </span>
-              </div>
-              <ChevronRight className={`w-4 h-4 ${
-                selectedCategory === category.slug
-                  ? 'text-green-700'
-                  : 'text-gray-700 group-hover:text-gray-900'
-              }`} />
-            </button>
+                    ? 'bg-green-50 border border-green-200'
+                    : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{category.icon}</span>
+                  <span className={`text-sm font-medium ${
+                    selectedCategory === category.slug
+                      ? 'text-green-700'
+                      : 'text-gray-700 group-hover:text-gray-900'
+                  }`}>
+                    {category.name}
+                  </span>
+                </div>
+                {category.subcategories ? (
+                  <ChevronRight className={`w-4 h-4 transition-transform ${
+                    expandedCategories.includes(category.slug) ? 'rotate-90' : ''
+                  } ${
+                    selectedCategory === category.slug
+                      ? 'text-green-700'
+                      : 'text-gray-700 group-hover:text-gray-900'
+                  }`} />
+                ) : (
+                  <ChevronRight className={`w-4 h-4 ${
+                    selectedCategory === category.slug
+                      ? 'text-green-700'
+                      : 'text-gray-700 group-hover:text-gray-900'
+                  }`} />
+                )}
+              </button>
+              
+              {/* Subcategories */}
+              {category.subcategories && expandedCategories.includes(category.slug) && (
+                <div className="ml-8 mt-1 space-y-1">
+                  {category.subcategories.map((subcategory) => (
+                    <button
+                      key={subcategory.slug}
+                      onClick={() => {
+                        onCategorySelect?.(subcategory.slug)
+                        if (isMobile && onClose) onClose()
+                      }}
+                      className={`w-full flex items-center justify-between p-2 rounded-lg transition-colors group ${
+                        selectedCategory === subcategory.slug
+                          ? 'bg-green-50 border border-green-200'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <span className={`text-sm font-medium ${
+                        selectedCategory === subcategory.slug
+                          ? 'text-green-700'
+                          : 'text-gray-600 group-hover:text-gray-900'
+                      }`}>
+                        {subcategory.name}
+                      </span>
+                      <ChevronRight className={`w-3 h-3 ${
+                        selectedCategory === subcategory.slug
+                          ? 'text-green-700'
+                          : 'text-gray-600 group-hover:text-gray-900'
+                      }`} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
       </div>
