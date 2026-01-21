@@ -134,10 +134,14 @@ export function Header() {
     setShowCountryModal(true)
   }
 
+  const handleLogoClick = () => {
+    window.location.href = "/"
+  }
+
   return (
     <>
       <header className="flex flex-col lg:flex-row items-center justify-between px-4 py-2 bg-white shadow-sm">
-        <Link href="/" className="flex items-center gap-2 lg:mb-0 mb-4" prefetch={false}>
+        <div onClick={handleLogoClick} className="flex items-center gap-2 lg:mb-0 mb-4 cursor-pointer">
           <div className="flex items-center">
             <div className="relative">
               <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
@@ -150,7 +154,7 @@ export function Header() {
             <span className="text-xl font-bold text-green-600 lg:text-2xl">Ecommerce</span>
             <span className="text-xs text-red-500 lg:text-sm">your perfect business solution</span>
           </div>
-        </Link>
+        </div>
         
         <div className="flex-1 lg:max-w-xl lg:mx-4 mx-4 lg:order-2 order-1">
           <div className="flex items-center border border-gray-300 rounded-md overflow-hidden relative">

@@ -119,9 +119,8 @@ export function CategorySidebar({ selectedCategory, onCategorySelect, isMobile, 
               <button
                 onClick={() => {
                   if (category.subcategories) {
-                    // For Shoes category, select "shoes" to show all shoes
-                    onCategorySelect?.(category.slug)
-                    if (isMobile && onClose) onClose()
+                    // For categories with subcategories, toggle expansion instead of selecting
+                    toggleCategory(category.slug)
                   } else {
                     onCategorySelect?.(category.slug)
                     if (isMobile && onClose) onClose()
